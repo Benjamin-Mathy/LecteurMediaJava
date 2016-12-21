@@ -1,6 +1,6 @@
 package sample;
 
-import com.aquafx_project.AquaFx;
+//import com.aquafx_project.AquaFx;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        AquaFx.style();
+        //AquaFx.style();
         
         Parent root = FXMLLoader.load(getClass().getResource("../Views/sample.fxml"));
         primaryStage.setTitle("Media Player");
