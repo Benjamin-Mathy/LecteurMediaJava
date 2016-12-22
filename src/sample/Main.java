@@ -14,7 +14,7 @@ public class Main extends Application {
         //AquaFx.style();
         
         Parent root = FXMLLoader.load(getClass().getResource("../Views/sample.fxml"));
-        primaryStage.setTitle("Media Player");
+        primaryStage.setTitle("MediaManager Player");
         primaryStage.setScene(new Scene(root, 1200, 800));
 
         primaryStage.show();

@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.media.MediaView?>
 
 <GridPane alignment="center" hgap="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Controller">
    <columnConstraints>
@@ -94,7 +93,7 @@
          <children>
             <Slider fx:id="volumeSlider" onDragDone="#VolumeChangeValue" onMouseClicked="#VolumeChangeValue" showTickLabels="true" showTickMarks="true" value="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <Label prefHeight="17.0" prefWidth="52.0" text="Speed :" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <ToggleButton fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseButtonSelected" prefHeight="82.0" prefWidth="82.0" text="| |" GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
+            <ToggleButton fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseButtonSelected" prefHeight="82.0" prefWidth="82.0" text="| | " GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
             <ToggleButton fx:id="replayButon" mnemonicParsing="false" onAction="#randomSelected" prefHeight="33.0" prefWidth="34.0" text="R" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <ToggleButton fx:id="randomButon" mnemonicParsing="false" onAction="#replaySelected" prefHeight="37.0" prefWidth="34.0" text="R" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <Slider fx:id="speedSlider" majorTickUnit="3.0" max="6.0" minorTickCount="1" onDragDone="#SpeedChangeValue" onMouseClicked="#SpeedChangeValue" prefHeight="14.0" prefWidth="241.0" showTickMarks="true" snapToTicks="true" value="3.0" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="2" />
@@ -128,7 +127,6 @@
          <children>
             <Slider fx:id="SlideListSearch" orientation="VERTICAL" GridPane.columnIndex="1" />
             <ListView fx:id="ListViewSearch" prefHeight="200.0" prefWidth="200.0" />
-            <MediaView fx:id="mediaView" disable="true" fitHeight="200.0" fitWidth="200.0" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="ALWAYS" GridPane.valignment="CENTER" GridPane.vgrow="ALWAYS" />
          </children>
       </GridPane>
    </children>
