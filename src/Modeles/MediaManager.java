@@ -1,21 +1,15 @@
 package Modeles;
 
 import Controllers.Controller;
-import Views.MainWindowController;
-import com.sun.media.jfxmediaimpl.MediaUtils;
-import javafx.collections.MapChangeListener;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import org.farng.mp3.MP3File;
 import org.farng.mp3.TagException;
 import org.farng.mp3.id3.ID3v1;
-import org.farng.mp3.id3.ID3v1_1;
-import sun.misc.IOUtils;
 
 import javax.swing.event.EventListenerList;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 /**
@@ -25,7 +19,6 @@ public class MediaManager {
     private String path;
     private MediaPlayer mp;
     private javafx.scene.media.Media me;
- //   private MediaInfo mediaInfo;
     private EventListenerList listeners = new EventListenerList();
     private Controller controller;
 
