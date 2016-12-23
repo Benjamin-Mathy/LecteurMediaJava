@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane alignment="center" hgap="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Controller">
+<GridPane alignment="center" hgap="10" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.112" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Views.MainWindowController">
    <columnConstraints>
       <ColumnConstraints maxWidth="298.0" minWidth="10.0" prefWidth="298.0" />
       <ColumnConstraints maxWidth="828.0" minWidth="10.0" prefWidth="759.0" />
@@ -43,16 +43,15 @@
           <TitledPane animated="false" text="Artiste">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <ListView prefHeight="553.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                     </children></AnchorPane>
+                  <ListView fx:id="ListArtist" prefHeight="553.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+              </AnchorPane>
             </content>
           </TitledPane>
           <TitledPane animated="false" text="Album">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView prefHeight="553.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <ListView fx:id="ListAlbum" prefHeight="553.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children></AnchorPane>
             </content>
           </TitledPane>
@@ -60,15 +59,15 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView prefHeight="553.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <ListView fx:id="ListFolder" prefHeight="553.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children></AnchorPane>
             </content>
           </TitledPane>
-            <TitledPane animated="false" text="Genre">
+            <TitledPane animated="false" text="Année">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ListView prefHeight="553.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <ListView fx:id="ListYear" prefHeight="553.0" prefWidth="296.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
                </content>
@@ -91,7 +90,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Slider fx:id="volumeSlider" onDragDone="#VolumeChangeValue" onMouseClicked="#VolumeChangeValue" showTickLabels="true" showTickMarks="true" value="50.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Slider fx:id="volumeSlider" onDragDone="#VolumeChangeValue" onMouseClicked="#VolumeChangeValue" showTickLabels="true" showTickMarks="true" value="5.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <Label prefHeight="17.0" prefWidth="52.0" text="Speed :" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             <ToggleButton fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseButtonSelected" prefHeight="82.0" prefWidth="82.0" text="| | " GridPane.halignment="CENTER" GridPane.rowSpan="3" GridPane.valignment="CENTER" />
             <ToggleButton fx:id="replayButon" mnemonicParsing="false" onAction="#randomSelected" prefHeight="33.0" prefWidth="34.0" text="R" GridPane.columnIndex="6" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
@@ -101,8 +100,8 @@
             <Slider fx:id="SliderTimeSlace" GridPane.columnIndex="1" GridPane.columnSpan="5" GridPane.rowIndex="1" />
          </children>
       </GridPane>
-      <Label prefHeight="25.0" prefWidth="320.0" text="&quot;Nom du Dossier/Artiste/Genre/Album sélectionné&quot;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Label prefHeight="25.0" prefWidth="208.0" text="Liste de lectures en cours" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+      <Label fx:id="LabelSearch" prefHeight="25.0" prefWidth="320.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <Label prefHeight="25.0" prefWidth="208.0" text="Liste de lectures en cours" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
       <GridPane GridPane.columnIndex="2" GridPane.rowIndex="2">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="182.0" minWidth="10.0" prefWidth="176.6666259765625" />
@@ -125,8 +124,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Slider fx:id="SlideListSearch" orientation="VERTICAL" GridPane.columnIndex="1" />
             <ListView fx:id="ListViewSearch" prefHeight="200.0" prefWidth="200.0" />
+            <Slider fx:id="SlideListSearch" orientation="VERTICAL" GridPane.columnIndex="1" />
          </children>
       </GridPane>
    </children>

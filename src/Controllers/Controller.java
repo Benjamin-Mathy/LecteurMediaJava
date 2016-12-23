@@ -1,62 +1,80 @@
 package Controllers;
 
+import Modeles.FileManager;
 import Modeles.MediaManager;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Slider;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
+import Views.MainWindowController;
+import javafx.stage.DirectoryChooser;
 
 import java.io.File;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.Hashtable;
 
-public class Controller implements Initializable {
+/**
+ * Created by Benja on 23/12/2016.
+ */
+public class Controller {
     private MediaManager mediaM;
+    private FileManager fileM;
+    private MainWindowController mainWindow;
 
-    @FXML
-    private ToggleButton playPauseButton;
-    @FXML
-    private Slider volumeSlider;
-    @FXML
-    private Slider speedSlider;
-    @FXML
-    private Slider SliderTimeSlace;
+    private Hashtable<String,String> ListMusicsSearch;
 
+    public Controller(MainWindowController mainWindow){
+        mediaM = new MediaManager(this);
+        fileM = new FileManager();
+        this.mainWindow=mainWindow;
 
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        mediaM = new MediaManager();
-
+        ListMusicsSearch= new Hashtable<>();
     }
-    public void addDirectorySelected(){
-        
-    }
+
     public void playPauseButtonSelected(){
         mediaM.PlayPauseButtonPressed();
     }
-    public void replaySelected(){
+    public void VolumeChangeValue(double value){
+        mediaM.ChangeVolume(value);
+    }
+    public void SpeedChangeValue(double value){
+        mediaM.ChangeSpeed(value);
+    }
+    public void addDirectorySelected() {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
 
-    }
-    public void randomSelected(){
+        File file = directoryChooser.showDialog(null);
 
+        if(file!=null){
+            try {
+                mediaM.loadListMusic(fileM.getListMusic(file.getPath()));
+                directoryAdded(file.getPath());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
-    public void VolumeChangeValue(){
-        mediaM.ChangeVolume(volumeSlider.getValue());
-    }
-    public void SpeedChangeValue(){
-        mediaM.ChangeSpeed(speedSlider.getValue());
-    }
-    public void TimeChangeValue(){
+    public void artistAdded(String artist) {
+        mainWindow.artistAdded(artist);
     }
 
+
+    public void yearAdded(String year) {
+        mainWindow.yearAdded(year);
+    }
+
+
+    public void albumAdded(String album) {
+        mainWindow.albumAdded(album);
+    }
+
+    public void directoryAdded(String path){
+        mainWindow.directoryAdded(path);
+    }
+    public void filterSelected(String typeFilter,String filter){
+
+        ListMusicsSearch=mediaM.getListMusic(typeFilter,filter);
+
+        mainWindow.filterSelected(ListMusicsSearch);
+    }
+    public void musicSelected(String music){
+        if(music!=null) {
+            mediaM.PlayMusic(ListMusicsSearch.get(music));
+        }
+    }
 }

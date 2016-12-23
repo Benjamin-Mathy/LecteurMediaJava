@@ -1,19 +1,14 @@
 package Modeles;
 
-import com.sun.xml.internal.ws.api.addressing.WSEndpointReference;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
+import Controllers.Controller;
+import Views.MainWindowController;
 import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableMap;
-import javafx.scene.effect.Reflection;
-import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
-
-import java.awt.*;
+import javax.swing.event.EventListenerList;
 import java.io.File;
-import java.util.SortedMap;
+import java.util.*;
 
 /**
  * Created by Benja on 20-12-16.
@@ -22,38 +17,36 @@ public class MediaManager {
     private String path;
     private MediaPlayer mp;
     private javafx.scene.media.Media me;
+ //   private MediaInfo mediaInfo;
+    private EventListenerList listeners = new EventListenerList();
+    private Controller controller;
 
-    private SortedMap<String, List> listArtist;
-    private SortedMap<String, List> ListAlbum;
+    private Hashtable<Integer, String> listMusic;
+    private SortedMap<String, ArrayList<Integer>> listArtist;
+    private SortedMap<String, ArrayList<Integer>> listAlbum;
+    private SortedMap<String, ArrayList<Integer>> listYear;
+    private SortedMap<String, ArrayList<Integer>> listFolder;
 
-    private Label artist;
-    private Label album;
-    private Label title;
-    private Label year;
-    // ImageView albumCover;
+    public MediaManager(Controller controller){
+        this.controller= controller;
 
-    public MediaManager(){
-        path = new File("E:\\Users\\Benja\\Music\\11 - Jinx.mp3").getAbsolutePath();
+        listMusic = new Hashtable<Integer, String>();
+        listArtist = new TreeMap<String, ArrayList<Integer>>();
+        listAlbum = new TreeMap<String, ArrayList<Integer>>();
+        listYear = new TreeMap<String, ArrayList<Integer>>();
+        listFolder = new TreeMap<String, ArrayList<Integer>>();
+
+
+
+    }
+    public void PlayMusic(String path){
+        if(mp!=null) {
+            mp.stop();
+            mp.dispose();
+        }
         me = new Media(new File(path).toURI().toString());
         mp = new MediaPlayer(me);
         mp.setAutoPlay(true);
-
-        mp.volumeProperty().addListener(new InvalidationListener() {
-            @Override
-            public void invalidated(Observable observable) {
-                if(true){}
-            }
-        });
-
-        me.getMetadata().addListener(new MapChangeListener<String, Object>() {
-            @Override
-            public void onChanged(Change<? extends String, ? extends Object> ch) {
-                if (ch.wasAdded()) {
-                    handleMetadata(ch.getKey(), ch.getValueAdded());
-                }
-            }
-        });
-
     }
 
     public void PlayPauseButtonPressed(){
@@ -71,23 +64,97 @@ public class MediaManager {
         mp.setVolume(value/100);
     }
 
-    private void handleMetadata(String key, Object value) {
-        if (key.equals("album")) {
-            album.setText(value.toString());
-
-        } else if (key.equals("artist")) {
-            artist.setText(value.toString());
-        } if (key.equals("title")) {
-            title.setText(value.toString());
-        } if (key.equals("year")) {
-            year.setText(value.toString());
-        } /*if (key.equals("image")) {
-            albumCover.setImage((Image)value);
-        }*/
+    public void loadListMusic(ArrayList<String> listMusic) throws InterruptedException {
+        if(!listMusic.isEmpty()) {
+            listFolder.put(listMusic.get(0).substring(0,listMusic.get(0).lastIndexOf("\\")),new ArrayList<>());
+        }
+        for (String musicPath: listMusic) {
+            addMusic(musicPath);
+        }
     }
 
+    private void addMusic(String path) {
+        me = new Media(new File(path).toURI().toString());
+        //String artist = mediaInfo.get(MediaInfo.StreamKind.Audio,1,"artist", MediaInfo.InfoKind.Text, MediaInfo.InfoKind.Name);
+        /*for(ListListener listener : listeners.getListeners(ListListener.class)) {
+            listener.musicAdded(path);
+        }*/
+        if(!listMusic.contains(path)) {
+            listMusic.put(listMusic.size()+1,path);
+            listFolder.get(path.substring(0,path.lastIndexOf("\\"))).add(listMusic.size());
 
+            me.getMetadata().addListener(new MapChangeListener<String, Object>() {
+                @Override
+                public void onChanged(Change<? extends String, ? extends Object> ch) {
+                    if (ch.wasAdded()) {
+                        addMetadata(ch.getKey(), ch.getValueAdded(), listMusic.size());
+                    }
+                }
+            });
+        }
+    }
+    private void addMetadata(String key, Object value, int id){
 
+        if (key.equals("album")) {
+            if(listAlbum.containsKey(value.toString())){
+                listAlbum.get(value.toString()).add(id);
+            }
+            else{
+                ArrayList<Integer> list = new ArrayList<Integer>();
+                list.add(id);
+                listAlbum.put(value.toString(),list);
+                controller.albumAdded(value.toString());
+            }
+        } if (key.equals("artist")) {
+            if(listArtist.containsKey(value.toString())){
+                listArtist.get(value.toString()).add(id);
 
-
+            }
+            else{
+                ArrayList<Integer> list = new ArrayList<Integer>();
+                list.add(id);
+                listArtist.put(value.toString(),list);
+                controller.artistAdded(value.toString());
+            }
+        } if (key.equals("year")) {
+            if(listYear.containsKey(value.toString())){
+                listYear.get(value.toString()).add(id);
+            }
+            else{
+                ArrayList<Integer> list = new ArrayList<Integer>();
+                list.add(id);
+                listYear.put(value.toString(),list);
+                controller.yearAdded(value.toString());
+            }
+        }
+    }
+    public Hashtable<String,String> getListMusic(String typeFilter, String filter){
+        Hashtable<String,String> results = new Hashtable<>();
+        int i = 0;
+        if (typeFilter.equals("album")) {
+            for (int id: listAlbum.get(filter)) {
+                i++;
+                results.put(i+":\t"+listMusic.get(id).split("\\\\")[listMusic.get(id).split("\\\\").length-1],listMusic.get(id));
+            }
+        }
+        if (typeFilter.equals("artist")) {
+            for (int id: listArtist.get(filter)) {
+                i++;
+                results.put(i+":\t"+listMusic.get(id).split("\\\\")[listMusic.get(id).split("\\\\").length-1],listMusic.get(id));
+            }
+        }
+        if (typeFilter.equals("year")) {
+            for (int id: listYear.get(filter)) {
+                i++;
+                results.put(i+":\t"+listMusic.get(id).split("\\\\")[listMusic.get(id).split("\\\\").length-1],listMusic.get(id));
+            }
+        }
+        if (typeFilter.equals("folder")) {
+            for (int id: listFolder.get(filter)) {
+                i++;
+                results.put(i+":\t"+listMusic.get(id).split("\\\\")[listMusic.get(id).split("\\\\").length-1],listMusic.get(id));
+            }
+        }
+        return results;
+    }
 }
