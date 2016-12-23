@@ -41,6 +41,8 @@ public class MainWindowController implements Initializable{
     @FXML
     private ListView<String> ListFolder;
     @FXML
+    private ListView<String> ListGenre;
+    @FXML
     private ListView<String> ListViewSearch;
     @FXML
     private Label LabelSearch;
@@ -107,8 +109,8 @@ public class MainWindowController implements Initializable{
         controller.SpeedChangeValue(speedSlider.getValue());
     }
     public void TimeChangeValue(){
-    }
         // TODO
+    }
     public void artistAdded(String artist) {
         ListArtist.getItems().add(artist);
     }
@@ -122,6 +124,8 @@ public class MainWindowController implements Initializable{
     public void albumAdded(String album) {
         ListAlbum.getItems().add(album);
     }
+
+    public void genreAdded(String genre) { ListGenre.getItems().add(genre); }
 
     public void directoryAdded(String path){
         ListFolder.getItems().add(path);

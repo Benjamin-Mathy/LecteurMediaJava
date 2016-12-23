@@ -63,6 +63,8 @@ public class Controller {
         mainWindow.albumAdded(album);
     }
 
+    public void genreAdded(String genre) { mainWindow.genreAdded(genre); }
+
     public void directoryAdded(String path){
         mainWindow.directoryAdded(path);
     }
